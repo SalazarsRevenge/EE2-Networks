@@ -21,21 +21,28 @@ import common.MessageInfo;
 public class UDPClient {
 
 	public static void main(String[] args) {
+
 		DatagramSocket aSocket = null;
-	try{ aSocket = new DatagramSocket();
+		int countTo = Integer.parseInt(args[2]);
+
+	try{
+		aSocket = new DatagramSocket();
 		byte[] m = args[0].getBytes();
 		InetAddress aHost = InetAddress.getByName(args[1]);
 		//int serverPort = Integer.parseInt(args[2]);
 		int serverPort = 6789;
-		DatagramPacket request = new DatagramPacket(m, args[0].length(), aHost, serverPort);
-		aSocket.send(request);
-		byte[] buffer = new byte[1000];
-		DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-		aSocket.receive(reply);
-		System.out.println("Reply:" + new String(reply.getData()));
+		
+		for(int i = 0; i < countTo; i++){
+			DatagramPacket request = new DatagramPacket(m, args[0].length(), aHost, serverPort);
+			//aSocket.send(request);
+			byte[] buffer = new byte[1000];
+			DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+			//aSocket.receive(reply);
+			System.out.println("Reply: " + new String(reply.getData()) + "    message no " + (i+1));
+		}
 
-	}catch(SocketException e) {System.out.println("Socket:" + e.getMessage());
-	}catch(IOException e){System.out.println("IO:" +e.getMessage());
+	}catch(SocketException e) {System.out.println("Socket: " + e.getMessage());
+	}catch(IOException e){System.out.println("IO: " +e.getMessage());
 
 	}}
 
@@ -45,7 +52,7 @@ public class UDPClient {
 
 	public static void main(String[] args) {
 		InetAddress	serverAddr = null;
-		int			recvPort;
+		int		recvPort;
 		int 		countTo;
 		String 		message;
 
