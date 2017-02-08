@@ -20,6 +20,7 @@ import common.MessageInfo;
 
 public class UDPClient {
 
+	/*
 	public static void main(String[] args) {
 
 		DatagramSocket aSocket = null;
@@ -34,10 +35,10 @@ public class UDPClient {
 		
 		for(int i = 0; i < countTo; i++){
 			DatagramPacket request = new DatagramPacket(m, args[0].length(), aHost, serverPort);
-			//aSocket.send(request);
+			aSocket.send(request);
 			byte[] buffer = new byte[1000];
 			DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-			//aSocket.receive(reply);
+			aSocket.receive(reply);
 			System.out.println("Reply: " + new String(reply.getData()) + "    message no " + (i+1));
 		}
 
@@ -45,9 +46,11 @@ public class UDPClient {
 	}catch(IOException e){System.out.println("IO: " +e.getMessage());
 
 	}}
+	*/
 
+//---------------------------------------------------------------------------------------------------------------------
 
-	/*
+	
 	private DatagramSocket sendSoc;
 
 	public static void main(String[] args) {
@@ -57,7 +60,7 @@ public class UDPClient {
 		String 		message;
 
 		// Get the parameters
-		if (args.length < 3) {
+		if (args.length < 4) {
 			System.err.println("Arguments required: server name/IP, recv port, message count");
 			System.exit(-1);
 		}
@@ -68,29 +71,55 @@ public class UDPClient {
 			System.out.println("Bad server address in UDPClient, " + args[0] + " caused an unknown host exception " + e);
 			System.exit(-1);
 		}
-		recvPort = Integer.parseInt(args[1]);
-		countTo = Integer.parseInt(args[2]);
+
+		//recvPort = Integer.parseInt(args[1]);
+		recvPort = 6789;
+		message = args[2];
+		countTo = Integer.parseInt(args[3]);
 
 
 		// TO-DO: Construct UDP client class and try to send messages
+		UDPClient myClient = new UDPClient();
+
+		try {
+			myClient.testLoop(serverAddr, recvPort, countTo);
 		
-	}
+		}catch(SocketException e) {System.out.println("Socket: " + e.getMessage());
+		}catch(IOException e){System.out.println("IO: " +e.getMessage());
+
+	}}
 
 	public UDPClient() {
 		// TO-DO: Initialise the UDP socket for sending data
+		DatagramSocket sendSocket = null;
+		sendSocket = new DatagramSocket();
 	}
 
 	private void testLoop(InetAddress serverAddr, int recvPort, int countTo) {
-		int				tries = 0;
+		
+		int tries = 0;
 
 		// TO-DO: Send the messages to the server
+		for(int i = 0; i < countTo; i++){
+
+			myClient.send(args[2], serverAddr, recvPort);
+
+			byte[] buffer = new byte[1000];
+			DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
+			sendSocket.receive(reply);
+			System.out.println("Reply: " + new String(reply.getData()) + "    message no " + (i+1));
+		}
+
 	}
 
 	private void send(String payload, InetAddress destAddr, int destPort) {
-		int				payloadSize;
-		byte[]				pktData;
-		DatagramPacket		pkt;
+		int payloadSize = payload.length();
+		byte[] pktData;
 
 		// TO-DO: build the datagram packet and send it to the server
-	}*/
+
+		DatagramPacket pkt = new DatagramPacket(payload, payloadSize, destAddress, destPort);
+		sendSocket.send(pkt);
+
+	}
 }
