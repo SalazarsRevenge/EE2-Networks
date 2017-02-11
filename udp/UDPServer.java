@@ -20,6 +20,7 @@ import common.MessageInfo;
 
 public class UDPServer {
 
+	/*
 	public static void main(String ags[]){
 	DatagramSocket aSocket = null;
 
@@ -38,16 +39,28 @@ public class UDPServer {
 	}catch(SocketException e){System.out.println("Socket: " +e.getMessage());
 	}catch(IOException e){System.out.println("IO: "+e.getMessage());
 	}}
+	*/
 
+//------------------------------------------------------------------------------
 
-
-
-
-	/*
 	private DatagramSocket recvSoc;
 	private int totalMessages = -1;
 	private int[] receivedMessages;
 	private boolean close;
+
+	public static void main(String args[]) {
+		int	recvPort;
+
+		// Get the parameters from command line
+		if (args.length < 1) {
+			System.err.println("Arguments required: recv port");
+			System.exit(-1);
+		}
+		recvPort = Integer.parseInt(args[0]);
+		UDPServer myServer = new UDPServer(recvPort);
+
+		myServer.run();
+	}
 
 	private void run() {
 		int				pacSize;
@@ -56,6 +69,20 @@ public class UDPServer {
 
 		// TO-DO: Receive the messages and process them by calling processMessage(...).
 		//        Use a timeout (e.g. 30 secs) to ensure the program doesn't block forever
+
+		try{
+			pacSize = 1000;
+			pacData = new byte[pacSize];
+			while(true){
+				pac = new DatagramPacket(pacData, pacSize);
+				recvSoc.receive(pac);
+				//DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), request.getAddress(), request.getPort());
+				//recvSoc.send(reply);
+			}
+
+		}catch(SocketException e){System.out.println("Socket: " +e.getMessage());
+		}catch(IOException e){System.out.println("IO: "+e.getMessage());
+		}
 
 	}
 
@@ -77,22 +104,13 @@ public class UDPServer {
 
 	public UDPServer(int rp) {
 		// TO-DO: Initialise UDP socket for receiving data
-
+		try {
+			recvSoc = new DatagramSocket(rp);
+		} catch (Exception e) {
+			System.out.println("could not create datagramsocket");
+		}
 		// Done Initialisation
 		System.out.println("UDPServer ready");
 	}
-
-	public static void main(String args[]) {
-		int	recvPort;
-
-		// Get the parameters from command line
-		if (args.length < 1) {
-			System.err.println("Arguments required: recv port");
-			System.exit(-1);
-		}
-		recvPort = Integer.parseInt(args[0]);
-
-		// TO-DO: Construct Server object and start it by calling run().
-	}*/
 
 }
