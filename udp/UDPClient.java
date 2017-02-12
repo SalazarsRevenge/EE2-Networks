@@ -83,6 +83,8 @@ public class UDPClient {
 			myClient.testLoop(serverAddr, recvPort, countTo, message);
 
 	}
+//internetaddress, receiveport, mesage, # of messages
+//146.169.26.33
 
 	public UDPClient(int recvPort) {
 		// TO-DO: Initialise the UDP socket for sending data
@@ -100,12 +102,17 @@ public class UDPClient {
 			for(int i = 0; i < countTo; i++){
 
 				this.send(m, serverAddr, recvPort);
-				/*
+
+
 				byte[] buffer = new byte[1000];
 				DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-				sendSocket.receive(reply);
+			try {
+				sendSoc.receive(reply);
 				System.out.println("Reply: " + new String(reply.getData()) + "    message no " + (i+1));
-				*/
+			} catch (Exception e){
+				System.out.println(e.toString());
+				System.out.println("message not received");
+			}
 			}
 		}
 
