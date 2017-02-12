@@ -42,7 +42,7 @@ public class UDPServer {
 	*/
 
 //------------------------------------------------------------------------------
-
+	
 	private DatagramSocket recvSoc;
 	private int totalMessages = -1;
 	private int[] receivedMessages;
@@ -57,14 +57,15 @@ public class UDPServer {
 			System.exit(-1);
 		}
 		recvPort = Integer.parseInt(args[0]);
+		//System.out.println(recvPort);
 		UDPServer myServer = new UDPServer(recvPort);
 
 		myServer.run();
 	}
 
 	private void run() {
-		int				pacSize;
-		byte[]			pacData;
+		int pacSize;
+		byte[] pacData;
 		DatagramPacket 	pac;
 
 		// TO-DO: Receive the messages and process them by calling processMessage(...).
@@ -76,8 +77,10 @@ public class UDPServer {
 			while(true){
 				pac = new DatagramPacket(pacData, pacSize);
 				recvSoc.receive(pac);
-				//DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), request.getAddress(), request.getPort());
-				//recvSoc.send(reply);
+				System.out.println("Message: " + new String(pac.getData()));
+				DatagramPacket reply = new DatagramPacket(pac.getData(), pac.getLength(), pac.getAddress(), pac.getPort());
+				recvSoc.send(reply);
+
 			}
 
 		}catch(SocketException e){System.out.println("Socket: " +e.getMessage());
