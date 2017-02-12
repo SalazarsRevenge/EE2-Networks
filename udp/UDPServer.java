@@ -104,7 +104,6 @@ public class UDPServer {
 		// Use the data to construct a new MessageInfo object
 
 		try {
-			//String info = new String( + ";" + );
 			msg = new MessageInfo(data);
 		} catch (Exception e) {
 			System.out.println("Error: " + e);

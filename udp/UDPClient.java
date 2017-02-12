@@ -58,8 +58,9 @@ public class UDPClient {
 		int 		countTo;
 		String 		message;
 
-		// Get the parameters
-		if (args.length < 4) {
+		// Get the parameters:
+		// internetaddress, receiveport, # of messages
+		if (args.length < 3) {
 			System.err.println("Arguments required: server name/IP, recv port, message count");
 			System.exit(-1);
 		}
@@ -72,22 +73,20 @@ public class UDPClient {
 		}
 
 		recvPort = Integer.parseInt(args[1]);
-		//recvPort = 6789;
-		message = args[2];
-		countTo = Integer.parseInt(args[3]);
+		countTo = Integer.parseInt(args[2]);
 
 
-		// TO-DO: Construct UDP client class and try to send messages
+		// Construct UDP client class and try to send messages
 		UDPClient myClient = new UDPClient(recvPort);
 
-			myClient.testLoop(serverAddr, recvPort, countTo, message);
+		myClient.testLoop(serverAddr, recvPort, countTo);
 
 	}
-//internetaddress, receiveport, mesage, # of messages
-//146.169.26.33
+	
+
 
 	public UDPClient(int recvPort) {
-		// TO-DO: Initialise the UDP socket for sending data
+		// Initialise the UDP socket for sending data
 		try {
 			sendSoc = new DatagramSocket(recvPort);
 		} catch (Exception e) {
@@ -95,24 +94,25 @@ public class UDPClient {
 		}
 	}
 
-	private void testLoop(InetAddress serverAddr, int recvPort, int countTo, String m) {
+	private void testLoop(InetAddress serverAddr, int recvPort, int countTo) {
 
 		for(int tries = 0; tries < 1; tries++){
-			// TO-DO: Send the messages to the server
+			// Send the messages to the server
 			for(int i = 0; i < countTo; i++){
 
+				String m = new String( (new String(i)) + ";" + (new String(countTo)) );
 				this.send(m, serverAddr, recvPort);
-
 
 				byte[] buffer = new byte[1000];
 				DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-			try {
-				sendSoc.receive(reply);
-				System.out.println("Reply: " + new String(reply.getData()) + "    message no " + (i+1));
-			} catch (Exception e){
-				System.out.println(e.toString());
-				System.out.println("message not received");
-			}
+				
+				try {
+					sendSoc.receive(reply);
+					System.out.println("Reply: " + new String(reply.getData()) + "    message no " + (i+1));
+				} catch (Exception e){
+					System.out.println(e.toString());
+					System.out.println("message not received");
+				}
 			}
 		}
 
