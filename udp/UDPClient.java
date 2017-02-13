@@ -100,7 +100,7 @@ public class UDPClient {
 			// Send the messages to the server
 			for(int i = 0; i < countTo; i++){
 
-				String m = new String( (new String(i)) + ";" + (new String(countTo)) );
+				String m = new String( (Integer.toString(countTo)) + ";" + (Integer.toString(i)) );
 				this.send(m, serverAddr, recvPort);
 
 				byte[] buffer = new byte[1000];
