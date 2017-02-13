@@ -47,6 +47,7 @@ public class UDPServer {
 	private int totalMessages = -1;
 	private int[] receivedMessages;
 	private boolean close;
+	private MessageInfo msg = null;
 
 	public static void main(String args[]) {
 		int recvPort;
@@ -87,6 +88,7 @@ public class UDPServer {
 
 			} catch (IOException e) {
 				System.out.println("Time out. Closing server");
+				LOGprint(msg);
 				System.exit(-1);
 			}
 
@@ -98,7 +100,7 @@ public class UDPServer {
 
 	public void processMessage(String data) {
 
-		MessageInfo msg = null;
+
 		System.out.println("message data: " + data);
 
 		// Use the data to construct a new MessageInfo object
@@ -124,31 +126,7 @@ public class UDPServer {
 		// If this is the last expected message, then identify any missing messages
 
 		if(msg.messageNum + 1 == msg.totalMessages){
-			close = true;
-
-			String s = "Lost packet numbers: ";
-			int count = 0;
-
-			for(int i = 0; i < totalMessages; i++){
-
-				if(receivedMessages[i] != 1){
-					count++;
-					s = s + (i+1) + ", ";
-				}
-
-			}
-
-			if (count == 0){
-				s = s + "None";
-			}
-
-			System.out.println("LOG:");
-			System.out.println("Number of messages received successfully: " + (msg.totalMessages - count));
-			System.out.println("of a total of " + msg.totalMessages);
-			System.out.println("Number of messages not received: " + count);
-			System.out.println(s);
-			System.out.println("END OF LOG.");
-
+			LOGprint(msg);
 		}
 
 	}
@@ -166,6 +144,35 @@ public class UDPServer {
 		// Done Initialisation
 		close = false;
 		System.out.println("UDPServer ready");
+	}
+
+	private void LOGprint(MessageInfo msg){
+
+		close = true;
+
+		String s = "Lost packet numbers: ";
+		int count = 0;
+
+		for(int i = 0; i < totalMessages; i++){
+
+			if(receivedMessages[i] != 1){
+				count++;
+				s = s + (i+1) + ", ";
+			}
+
+		}
+
+		if (count == 0){
+			s = s + "None";
+		}
+
+		System.out.println("LOG:");
+		System.out.println("Number of messages received successfully: " + (msg.totalMessages - count));
+		System.out.println("of a total of " + msg.totalMessages);
+		System.out.println("Number of messages not received: " + count);
+		System.out.println(s);
+		System.out.println("END OF LOG.");
+
 	}
 
 }
