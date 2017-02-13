@@ -5,43 +5,11 @@ package udp;
 
 import java.io.*;
 import java.net.*;
-
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-
-
 import java.util.Arrays;
 
 import common.MessageInfo;
 
 public class UDPServer {
-
-	/*
-	public static void main(String ags[]){
-	DatagramSocket aSocket = null;
-
-	try{
-		//aSocket = new DatagramSocket(Integer.parseInt(args[0]));
-		aSocket = new DatagramSocket(6789);
-		byte[] buffer = new byte[1000];
-
-		while(true){
-			DatagramPacket request = new DatagramPacket(buffer, buffer.length);
-			aSocket.receive(request);
-			DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), request.getAddress(), request.getPort());
-			aSocket.send(reply);
-		}
-
-	}catch(SocketException e){System.out.println("Socket: " +e.getMessage());
-	}catch(IOException e){System.out.println("IO: "+e.getMessage());
-	}}
-	*/
-
-//------------------------------------------------------------------------------
 
 	private DatagramSocket recvSoc;
 	private int totalMessages = -1;

@@ -62,6 +62,7 @@ public class UDPClient {
 			System.out.println(m);
 			this.send(m, serverAddr, recvPort);
 
+			// LISTEN TO REPLY PART
 			//byte[] buffer = new byte[1000];
 			//DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
 			//
