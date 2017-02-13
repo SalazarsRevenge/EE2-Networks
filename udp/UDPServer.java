@@ -42,7 +42,7 @@ public class UDPServer {
 	*/
 
 //------------------------------------------------------------------------------
-	
+
 	private DatagramSocket recvSoc;
 	private int totalMessages = -1;
 	private int[] receivedMessages;
@@ -84,7 +84,7 @@ public class UDPServer {
 			try{
 				recvSoc.setSoTimeout(30000);
 				recvSoc.receive(pac);
-					
+
 			} catch (IOException e) {
 				System.out.println("Time out. Closing server");
 				System.exit(-1);
@@ -106,15 +106,10 @@ public class UDPServer {
 		try {
 			msg = new MessageInfo(data);
 		} catch (Exception e) {
+			System.out.println("messageInfo Error: " + data);
 			System.out.println("Error: " + e);
 		}
-	    
-		// On receipt of first message, initialize the receive buffer
-		if (receivedMessages == null) {
-			totalMessages = msg.totalMessages;
-			receivedMessages = new int[totalMessages];
-		}
-		
+
 		// On receipt of first message, initialise the receive buffer
 
 		if(receivedMessages == null) {
@@ -142,7 +137,7 @@ public class UDPServer {
 				}
 
 			}
-			
+
 			if (count == 0){
 				s = s + "None";
 			}

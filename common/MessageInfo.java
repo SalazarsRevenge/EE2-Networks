@@ -15,8 +15,8 @@ public class MessageInfo implements Serializable {
 
 	public static final long serialVersionUID = 52L;
 
-	public int totalMessages;
-	public int messageNum;
+	public int totalMessages = 0;
+	public int messageNum = 0;
 
 	public MessageInfo(int total, int msgNum) {
 		totalMessages = total;
@@ -25,18 +25,27 @@ public class MessageInfo implements Serializable {
 
 	public MessageInfo(String msg) throws Exception {
 		String[] fields = msg.split(";");
-
+		/*
 		for(int i = 0; i < fields.length; i++) {
 			System.out.println(fields[i]);
 		}
 		System.out.println(fields.length);
-		
+		*/
 		if (fields.length != 2) {
+			//System.out.println("this is an error cause of the 2 thingy");
 			throw new Exception("MessageInfo: Invalid string for message construction: " + msg);
 		}
 
-		totalMessages = Integer.parseInt(fields[0]);
-		messageNum = Integer.parseInt(fields[1]);
+		try{
+			totalMessages = Integer.parseInt(fields[0].trim());
+			//System.out.println(totalMessages);
+			messageNum = Integer.parseInt(fields[1].trim());
+			//System.out.println(messageNum);
+		} catch (Exception e){
+			System.out.println("parse string error");
+			System.exit(-1);
+		}
+
 	}
 
 	public String toString(){
