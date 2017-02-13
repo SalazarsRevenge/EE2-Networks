@@ -9,6 +9,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
+import java.rmi.RMISecurityManager;
 
 import common.*;
 
@@ -24,11 +25,13 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 		RMIServer rmis = null;
 
 		// Initialise Security Manager
-		if(System.securityManager() == null){
+		if(System.getSecurityManager() == null){
 			System.setSecurityManager(new RMISecurityManager());
 		}
 
 		// Instantiate the server class - what is this
+		//RMIServer myServer = new RMIServer();
+
 		// Bind to RMI registry
 		try {
 			// default registry port 1099
@@ -55,11 +58,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 		}
 
 		// Log receipt of the message
-		receivedMessages[messageNum] = 1;
+		receivedMessages[msg.messageNum] = 1;
 
 		// If this is the last expected message, then identify
 		// any missing messages
-		if(messageNum + 1 == totalMessages){
+		if(msg.messageNum + 1 == totalMessages){
 			LOGprint();
 		}
 

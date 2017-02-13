@@ -3,9 +3,9 @@
  */
 package rmi;
 
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.net.MalformedURLException;
+import java.rmi.*;
+import java.rmi.RMISecurityManager;
 
 import common.MessageInfo;
 
@@ -25,7 +25,7 @@ public class RMIClient {
 		int numMessages = Integer.parseInt(args[1]);
 
 		// Initialise Security Manager
-		if(System.securityManager() == null){
+		if(System.getSecurityManager() == null){
 			System.setSecurityManager(new RMISecurityManager());
 		}
 
@@ -40,7 +40,7 @@ public class RMIClient {
 			 }
 
 		} catch (MalformedURLException e) {
-			System.out.println("Errpr: Malformed hostname.");
+			System.out.println("Error: Malformed hostname.");
 		} catch (RemoteException e) {
 			System.out.println("Error: Remote Exception.");
 		} catch (NotBoundException e) {
