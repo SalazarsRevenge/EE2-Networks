@@ -17,30 +17,41 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 	private int totalMessages = -1;
 	private int[] receivedMessages;
 
-	public RMIServer() throws RemoteException {
-	}
-
-	public void receiveMessage(MessageInfo msg) throws RemoteException {
-
-		// TO-DO: On receipt of first message, initialise the receive buffer
-
-		// TO-DO: Log receipt of the message
-
-		// TO-DO: If this is the last expected message, then identify
-		//        any missing messages
-
-	}
-
+	public RMIServer() throws RemoteException {}
 
 	public static void main(String[] args) {
 
 		RMIServer rmis = null;
 
-		// TO-DO: Initialise Security Manager
+		// Initialise Security Manager
+		if(System.securityManager() == null){
+			System.setSecurityManager(new RMISecurityManager());
+		}
 
 		// TO-DO: Instantiate the server class
 
 		// TO-DO: Bind to RMI registry
+
+	}
+
+	public void receiveMessage(MessageInfo msg) throws RemoteException {
+
+		// On receipt of first message, initialise the receive buffer
+		if(receivedMessages == null){
+			totalMessages = msg.totalMessages;
+			receivedMessages = new int[msg.totalMessages];
+		}
+
+		// Log receipt of the message
+		receivedMessages[messageNum] = 1;
+
+		// If this is the last expected message, then identify
+		// any missing messages
+		if(messageNum + 1 == totalMessages){
+
+			LOGprint();
+
+		}
 
 	}
 
@@ -55,4 +66,31 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 		// Note - Registry.rebind (as returned by createRegistry / getRegistry) does something similar but
 		// expects different things from the URL field.
 	}
+
+	private void LOGprint(){
+
+		String s = "Lost messages: ";
+		int count = 0;
+
+		for(int i = 0; i < totalMessages; i++){
+			if(receivedMessages[i] != 1){
+				count++;
+				s = s + " " + (i+1) + ", ";
+			}
+		}
+
+		if(count == 0){
+			s = s + "None";
+		}
+
+		System.out.println("LOG:");
+		System.out.println("No of messages sent: " + totalMessages);
+		System.out.println("No of messages received: " + (totalMessages - count));
+		System.out.println("No of messages lost: " + count);
+		System.out.println(s);
+		System.out.println("LOG END");
+		System.exit(0);
+
+	}
+
 }

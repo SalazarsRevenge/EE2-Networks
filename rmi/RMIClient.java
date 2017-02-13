@@ -24,7 +24,10 @@ public class RMIClient {
 		String urlServer = new String("rmi://" + args[0] + "/RMIServer");
 		int numMessages = Integer.parseInt(args[1]);
 
-		// TO-DO: Initialise Security Manager
+		// Initialise Security Manager
+		if(System.securityManager() == null){
+			System.setSecurityManager(new RMISecurityManager());
+		}
 
 		// TO-DO: Bind to RMIServer
 
