@@ -28,9 +28,21 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 			System.setSecurityManager(new RMISecurityManager());
 		}
 
-		// TO-DO: Instantiate the server class
+		// Instantiate the server class - what is this
+		// Bind to RMI registry
+		try {
+			// default registry port 1099
+			LocateRegistry.createRegistry(1099);
+			Naming.rebind("RMIServer", new RMIServer());
+		} catch (RemoteException e) {
+			System.out.println("Error initializing registry or binding server.");
+			System.exit(-1);
+		} catch (MalformedURLException e) {
+			System.out.println("Could not bind server to defined registry as the URL was malformed.");
+			System.exit(-1);
+		}
+		System.out.println("Waiting...");
 
-		// TO-DO: Bind to RMI registry
 
 	}
 
@@ -48,9 +60,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerI {
 		// If this is the last expected message, then identify
 		// any missing messages
 		if(messageNum + 1 == totalMessages){
-
 			LOGprint();
-
 		}
 
 	}
