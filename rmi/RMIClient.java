@@ -30,14 +30,17 @@ public class RMIClient {
 		}
 
 		// Bind to RMIServer
-		 try {
-			 iRMIServer = (RMIServerI) Naming.lookup(urlServer);
+	 try {
+		 iRMIServer = (RMIServerI) Naming.lookup(urlServer);
 
-			 // Attempt to send messages the specified number of times
-			 for(int i = 0; i < numMessages; i++) {
-				MessageInfo msg = new MessageInfo(numMessages,i);
-				iRMIServer.receiveMessage(msg);
-			 }
+		 // Attempt to send messages the specified number of times
+		 for(int i = 0; i < numMessages; i++) {
+			String m = new String( (Integer.toString(numMessages)) + ";" + (Integer.toString(i)) );
+			MessageInfo msg = new MessageInfo(m);
+			iRMIServer.receiveMessage(msg);
+			//System.out.println(i);
+		 }
+		 System.out.println("All messages sent");
 
 		} catch (MalformedURLException e) {
 			System.out.println("Error: Malformed hostname.");
@@ -45,6 +48,8 @@ public class RMIClient {
 			System.out.println("Error: Remote Exception.");
 		} catch (NotBoundException e) {
 			System.out.println("Error: Not Bound Exception.");
+		} catch (Exception e) {
+			System.out.println("help, an error!");
 		}
 
 	}
